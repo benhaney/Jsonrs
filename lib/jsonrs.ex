@@ -4,8 +4,11 @@ defmodule Jsonrs do
   """
   use Rustler, otp_app: :jsonrs, crate: "jsonrs"
 
-  @spec nif_encode!(term, integer) :: String.t()
-  defp nif_encode!(_input, _indent), do: :erlang.nif_error(:nif_not_loaded)
+  @spec nif_encode!(term) :: String.t()
+  defp nif_encode!(_input), do: :erlang.nif_error(:nif_not_loaded)
+
+  @spec nif_encode_pretty!(term, non_neg_integer) :: String.t()
+  defp nif_encode_pretty!(_input, _indent), do: :erlang.nif_error(:nif_not_loaded)
 
   @spec nif_decode!(term) :: String.t()
   defp nif_decode!(_input), do: :erlang.nif_error(:nif_not_loaded)
@@ -62,15 +65,17 @@ defmodule Jsonrs do
   @spec encode!(term, keyword) :: String.t()
   def encode!(input, opts \\ []) do
     {lean, opts} = Keyword.pop(opts, :lean, false)
-    indent = case Keyword.pop(opts, :pretty, -1) do
-      {true, _} -> 2
-      {x, _} -> x
-    end
+    {indent, _opts} = Keyword.pop(opts, :pretty, -1)
+    indent = if true == indent, do: 2, else: indent
     case lean do
-      true -> nif_encode!(input, indent)
-      false -> nif_encode!(Jsonrs.Encoder.encode(input), indent)
+      true -> input
+      false -> Jsonrs.Encoder.encode(input)
     end
+    |> do_encode!(indent)
   end
+
+  defp do_encode!(input, indent) when is_integer(indent) and indent >= 0, do: nif_encode_pretty!(input, indent)
+  defp do_encode!(input, _indent), do: nif_encode!(input)
 
   @doc """
   Parses a JSON value from `input` string.
