@@ -4,6 +4,12 @@ defmodule Jsonrs do
   """
   use Rustler, otp_app: :jsonrs, crate: "jsonrs"
 
+  @spec nif_encode!(term, integer) :: String.t()
+  defp nif_encode!(_input, _indent), do: :erlang.nif_error(:nif_not_loaded)
+
+  @spec nif_decode!(term) :: String.t()
+  defp nif_decode!(_input), do: :erlang.nif_error(:nif_not_loaded)
+
   @doc """
   Generates JSON corresponding to `input`.
 
@@ -15,9 +21,9 @@ defmodule Jsonrs do
     iex> Jsonrs.encode("\\xFF")
     {:error, :encode_error}
   """
-  @spec encode(term) :: {:ok, String.t()} | {:error, :encode_error}
-  def encode(input) do
-    {:ok, encode!(input)}
+  @spec encode(term, keyword) :: {:ok, String.t()} | {:error, :encode_error}
+  def encode(input, opts \\ []) do
+    {:ok, encode!(input, opts)}
   rescue
     e in ErlangError -> {:error, e.original}
   end
@@ -53,8 +59,18 @@ defmodule Jsonrs do
     iex> Jsonrs.encode!("\\xFF")
     ** (ErlangError) Erlang error: :encode_error
   """
-  @spec encode!(term) :: String.t()
-  def encode!(_input), do: :erlang.nif_error(:nif_not_loaded)
+  @spec encode!(term, keyword) :: String.t()
+  def encode!(input, opts \\ []) do
+    {lean, opts} = Keyword.pop(opts, :lean, false)
+    indent = case Keyword.pop(opts, :pretty, -1) do
+      {true, _} -> 2
+      {x, _} -> x
+    end
+    case lean do
+      true -> nif_encode!(input, indent)
+      false -> nif_encode!(Jsonrs.Encoder.encode(input), indent)
+    end
+  end
 
   @doc """
   Parses a JSON value from `input` string.
@@ -70,17 +86,17 @@ defmodule Jsonrs do
     ** (ErlangError) Erlang error: "expected value at line 1 column 1"
   """
   @spec decode!(String.t()) :: term
-  def decode!(_input), do: :erlang.nif_error(:nif_not_loaded)
+  def decode!(input), do: nif_decode!(input)
 
   @doc """
   Identical to `encode\1`. Exists to implement Phoenix interface and encodes to a single normal string.
   """
-  @spec encode_to_iodata(term) :: {:ok, String.t()} | {:error, :encode_error}
-  def encode_to_iodata(input), do: encode(input)
+  @spec encode_to_iodata(term, keyword) :: {:ok, String.t()} | {:error, :encode_error}
+  def encode_to_iodata(input, opts \\ []), do: encode(input, opts)
 
   @doc """
   Identical to `encode!\1`. Exists to implement Phoenix interface and encodes to a single normal string.
   """
-  @spec encode_to_iodata!(term) :: String.t()
-  def encode_to_iodata!(input), do: encode!(input)
+  @spec encode_to_iodata!(term, keyword) :: String.t()
+  def encode_to_iodata!(input, opts \\ []), do: encode!(input, opts)
 end
