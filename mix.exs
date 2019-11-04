@@ -51,7 +51,7 @@ defmodule Jsonrs.MixProject do
       maintainers: ["Ben Haney"],
       licenses: ["Unlicense"],
       links: %{"GitHub" => "https://github.com/benhaney/jsonrs"},
-      files: ["lib", "mix.exs", "README*", "native/jsonrs/src", "native/jsonrs/Cargo.toml"]
+      files: ["lib", "mix.exs", "README*", "native"]
     ]
   end
 

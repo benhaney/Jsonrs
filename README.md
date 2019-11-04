@@ -77,6 +77,6 @@ defimpl Jsonrs.Encoder, for: [MapSet, Range, Stream] do
 end
 ```
 
-## Ingredients
+## Credits
 
-Jsonrs is a scoop of [Serde_rustler](https://github.com/sunny-g/serde_rustler) and a scoop of [Serde_json](https://github.com/serde-rs/json) on a bed of [Rustler](https://github.com/rusterlium/rustler) with a [Jason](https://github.com/michalmuskala/jason)-inspired glaze.
+Jsonrs is built on the backs of giants. It is connecting the Rust libraries [Serde_rustler](https://github.com/sunny-g/serde_rustler) and [Serde_json](https://github.com/serde-rs/json), exposing them to Elixir through [Rustler](https://github.com/rusterlium/rustler), and wrapping the NIF in an interface inspired by [Jason](https://github.com/michalmuskala/jason). Without these projects, Jsonrs probably wouldn't exist.
