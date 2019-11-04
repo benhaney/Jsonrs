@@ -1,4 +1,4 @@
-defmodule Jsoner.MixProject do
+defmodule Jsonrs.MixProject do
   use Mix.Project
 
   def project do
