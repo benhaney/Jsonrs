@@ -1,6 +1,33 @@
 defprotocol Jsonrs.Encoder do
+  @moduledoc """
+  Protocol controlling how a value is encoded to JSON.
+
+  By default, structs are encoded as maps without the `:__struct__` key. If this
+  is sufficient for you use, you don't need to implement this protocol.
+
+  When implementing an encoding function, the goal is to turn your value into
+  something already capable of being encoded.
+
+  ## Example
+
+  An implementation of this protocol for `Decimal` might look something like
+
+      defimpl Jsonrs.Encoder, for: Decimal do
+        def encode(value) do
+          Decimal.to_string(value)
+        end
+      end
+
+  Which will cause the Decimal to be encoded as its string representation
+
+  """
+
   @fallback_to_any true
-  def encode(data)
+
+  @doc """
+  Converts `value` to a JSON-encodable type.
+  """
+  def encode(value)
 end
 
 defimpl Jsonrs.Encoder, for: Map do
