@@ -18,11 +18,11 @@ defmodule Jsonrs do
 
   ## Examples
 
-    iex> Jsonrs.encode(%{"x" => [1,2]})
-    {:ok, "{\\"x\\":[1,2]}"}
+      iex> Jsonrs.encode(%{"x" => [1,2]})
+      {:ok, "{\\"x\\":[1,2]}"}
 
-    iex> Jsonrs.encode("\\xFF")
-    {:error, :encode_error}
+      iex> Jsonrs.encode("\\xFF")
+      {:error, :encode_error}
   """
   @spec encode(term, keyword) :: {:ok, String.t()} | {:error, :encode_error}
   def encode(input, opts \\ []) do
@@ -36,11 +36,11 @@ defmodule Jsonrs do
 
   ## Examples
 
-    iex> Jsonrs.decode("{\\"x\\":[1,2]}")
-    {:ok, %{"x" => [1, 2]}}
+      iex> Jsonrs.decode("{\\"x\\":[1,2]}")
+      {:ok, %{"x" => [1, 2]}}
 
-    iex> Jsonrs.decode("invalid")
-    {:error, "expected value at line 1 column 1"}
+      iex> Jsonrs.decode("invalid")
+      {:error, "expected value at line 1 column 1"}
   """
   @spec decode(String.t()) :: {:ok, term} | {:error, String.t()}
   def decode(input) do
@@ -56,11 +56,11 @@ defmodule Jsonrs do
 
   ## Examples
 
-    iex> Jsonrs.encode!(%{"x" => [1,2]})
-    "{\\"x\\":[1,2]}"
+      iex> Jsonrs.encode!(%{"x" => [1,2]})
+      "{\\"x\\":[1,2]}"
 
-    iex> Jsonrs.encode!("\\xFF")
-    ** (ErlangError) Erlang error: :encode_error
+      iex> Jsonrs.encode!("\\xFF")
+      ** (ErlangError) Erlang error: :encode_error
   """
   @spec encode!(term, keyword) :: String.t()
   def encode!(input, opts \\ []) do
@@ -84,23 +84,23 @@ defmodule Jsonrs do
 
   ## Examples
 
-    iex> Jsonrs.decode!("{\\"x\\":[1,2]}")
-    %{"x" => [1, 2]}
+      iex> Jsonrs.decode!("{\\"x\\":[1,2]}")
+      %{"x" => [1, 2]}
 
-    iex> Jsonrs.decode!("invalid")
-    ** (ErlangError) Erlang error: "expected value at line 1 column 1"
+      iex> Jsonrs.decode!("invalid")
+      ** (ErlangError) Erlang error: "expected value at line 1 column 1"
   """
   @spec decode!(String.t()) :: term
   def decode!(input), do: nif_decode!(input)
 
   @doc """
-  Identical to `encode\1`. Exists to implement Phoenix interface and encodes to a single normal string.
+  Identical to `encode/1`. Exists to implement Phoenix interface and encodes to a single normal string.
   """
   @spec encode_to_iodata(term, keyword) :: {:ok, String.t()} | {:error, :encode_error}
   def encode_to_iodata(input, opts \\ []), do: encode(input, opts)
 
   @doc """
-  Identical to `encode!\1`. Exists to implement Phoenix interface and encodes to a single normal string.
+  Identical to `encode!/1`. Exists to implement Phoenix interface and encodes to a single normal string.
   """
   @spec encode_to_iodata!(term, keyword) :: String.t()
   def encode_to_iodata!(input, opts \\ []), do: encode!(input, opts)

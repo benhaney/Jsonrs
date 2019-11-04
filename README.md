@@ -1,6 +1,16 @@
 # Jsonrs
 
-A safe NIF-based JSON library for Elixir powered by Rust's Serde.
+A safe NIF-based JSON library for Elixir powered by Rust's Serde. [API Documentation](https://hexdocs.pm/jsonrs/Jsonrs.html).
+
+## Installation
+
+Add Jsonrs as a dependency in your `mix.exs` file.
+
+```elixir
+def deps do
+  [{:jsonrs, "~> 0.1"}]
+end
+```
 
 ## Summary
 
@@ -8,7 +18,7 @@ Jsonrs is much faster than other JSON libraries for Elixir, including other NIFs
 
 It uses much less memory than other JSON libraries when operating in a mode with comparable features.
 
-It has an API typical of Elixir JSON libraries. `decode/1` `encode/2` and `encode_to_iodata/2` are available along with their raising `!` counterparts, and structs can implement `Jsonrs.Encoder` to specify custom encoding.
+It has an API typical of Elixir JSON libraries. `decode/1` `encode/2` and `encode_to_iodata/2` are available along with their raising `!` counterparts, and structs can implement the `Jsonrs.Encoder` protocol to specify custom encoding.
 
 Multiple operating modes allow you to turn off features you don't need for extra performance. In the default 2-pass mode, Jsonrs works like Jason and Poison and honors custom encoding of structs. In the opt-in 1-pass (_lean_) mode, Jsonrs will ignore custom encoding impls and operate more like jiffy.
 
