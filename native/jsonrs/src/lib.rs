@@ -12,35 +12,45 @@ rustler::rustler_export_nifs! {
 }
 
 fn encode<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-  // Buffer for serde_json's serializer to write to
+  // Prep Erlang term Deserializer with dynamic stack
+  let des = serde_rustler::Deserializer::from(args[0]);
+  let des = serde_stacker::Deserializer::new(des);
+  // Buffer for Json serializer to write to
   let mut buf = Vec::new();
-  serde_transcode::transcode(
-    serde_rustler::Deserializer::from(args[0]),
-    &mut serde_json::Serializer::new(&mut buf)
-  ).or(Err(rustler::Error::RaiseAtom("encode_error")))?;
-  // Turn the json buffer back into an Elixir binary (string) term
+  // Serialize to JSON sting (in buffer)
+  let mut ser = serde_json::Serializer::new(&mut buf);
+  // Transcode from Erlang terms to JSON string (in buffer)
+  serde_transcode::transcode(des, &mut ser).or(Err(rustler::Error::RaiseAtom("encode_error")))?;
+  // Turn the JSON buffer back into an Elixir binary (string) term
   to_term(env, serde_bytes::Bytes::new(&buf)).map_err(|e| e.into())
 }
 
 // Takes a term and an indentation size
 fn encode_pretty<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-  // Buffer for serde_json's serializer to write to
+  // Prep Erlang term Deserializer with dynamic stack
+  let des = serde_rustler::Deserializer::from(args[0]);
+  let des = serde_stacker::Deserializer::new(des);
+  // Buffer for JSON serializer to write to
   let mut buf = Vec::new();
+  // Create pretty-print formatter with indentation size from arg
   let indent_size: u32 = from_term(args[1])?;
   let indent = std::iter::repeat(" ").take(indent_size as usize).collect::<String>();
   let formatter = serde_json::ser::PrettyFormatter::with_indent(indent.as_bytes());
-  serde_transcode::transcode(
-    serde_rustler::Deserializer::from(args[0]),
-    &mut serde_json::Serializer::with_formatter(&mut buf, formatter)
-  ).or(Err(rustler::Error::RaiseAtom("encode_error")))?;
-  // Turn the json buffer back into an Elixir binary (string) term
+  // Serialize to JSON sting (in buffer)
+  let mut ser = serde_json::Serializer::with_formatter(&mut buf, formatter);
+  // Transcode from Erlang terms to JSON string (in buffer)
+  serde_transcode::transcode(des, &mut ser).or(Err(rustler::Error::RaiseAtom("encode_error")))?;
+  // Turn the JSON buffer back into an Elixir binary (string) term
   to_term(env, serde_bytes::Bytes::new(&buf)).map_err(|e| e.into())
 }
 
 fn decode<'a>(env: Env<'a>, args: &[Term<'a>]) -> NifResult<Term<'a>> {
-  // Transcode the Json bytes from an Elixir string term right back into a deserialized Elixir term
-  serde_transcode::transcode(
-    &mut serde_json::Deserializer::from_slice(from_term(args[0])?),
-    serde_rustler::Serializer::from(env)
-  ).map_err(|e| e.into())
+  // Prep JSON deserializer with dynamic stack
+  let mut des = serde_json::Deserializer::from_slice(from_term(args[0])?);
+  des.disable_recursion_limit();
+  let des = serde_stacker::Deserializer::new(&mut des);
+  // Serializer to Erlang terms
+  let ser = serde_rustler::Serializer::from(env);
+  // Transcode from Json to Erlang terms
+  serde_transcode::transcode(des, ser).map_err(|e| e.into())
 }
