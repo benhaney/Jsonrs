@@ -39,7 +39,9 @@ In the default 2-pass mode, Jsonrs is comparable feature-wise to Jason or Poison
 In lean mode, Jsonrs is comparable feature-wise to jiffy and should always be faster (~3x) and use less memory (~100x+) than it.
 
 For example, here is a benchmark of Jsonrs's speed and memory consumption compared to other popular JSON libraries when encoding the 8MB [issue-90.json](https://github.com/devinus/poison/blob/a4208a6252f4e58fbcc8d9fd2f4f64c99e974cc8/bench/data/issue-90.json) from the Poison benchmark data.
+
 ![Speed comparison of JSON libraries](https://raw.githubusercontent.com/benhaney/Jsonrs/bd8a008bcee93a0418646e4a8b32b8e26492fe97/bench-speed.png)
+
 ![Memory comparison of JSON libraries](https://raw.githubusercontent.com/benhaney/Jsonrs/bd8a008bcee93a0418646e4a8b32b8e26492fe97/bench-memory.png)
 
 It is easy to see that Jsonrs dramatically outperforms Poison and Jason, while Jsonrs-lean similarly outperforms jiffy.
