@@ -1,7 +1,7 @@
 defmodule Jsonrs.MixProject do
   use Mix.Project
 
-  @version "0.1.1"
+  @version "0.1.0"
 
   def project do
     [
@@ -51,7 +51,7 @@ defmodule Jsonrs.MixProject do
       maintainers: ["Ben Haney"],
       licenses: ["Unlicense"],
       links: %{"GitHub" => "https://github.com/benhaney/jsonrs"},
-      files: ["lib", "mix.exs", "README*", "native/jsonrs/src", "native/jsonrs/.cargo", "native/jsonrs/README*", "native/jsonrs/Cargo*"]
+      files: ["lib", "mix.exs", "README*", "native"]
     ]
   end
 
