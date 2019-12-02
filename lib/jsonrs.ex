@@ -42,9 +42,9 @@ defmodule Jsonrs do
       iex> Jsonrs.decode("invalid")
       {:error, "expected value at line 1 column 1"}
   """
-  @spec decode(String.t()) :: {:ok, term} | {:error, String.t()}
-  def decode(input) do
-    {:ok, decode!(input)}
+  @spec decode(String.t(), Keyword.t()) :: {:ok, term} | {:error, String.t()}
+  def decode(input, opts \\ []) do
+    {:ok, decode!(input, opts)}
   rescue
     e in ErlangError -> {:error, e.original}
   end
@@ -80,7 +80,7 @@ defmodule Jsonrs do
   @doc """
   Parses a JSON value from `input` string.
 
-  Similar to `decode/1` except it will raise in case of errors.
+  Similar to `decode/2` except it will raise in case of errors.
 
   ## Examples
 
@@ -90,8 +90,8 @@ defmodule Jsonrs do
       iex> Jsonrs.decode!("invalid")
       ** (ErlangError) Erlang error: "expected value at line 1 column 1"
   """
-  @spec decode!(String.t()) :: term
-  def decode!(input), do: nif_decode!(input)
+  @spec decode!(String.t(), Keyword.t()) :: term
+  def decode!(input, _opts \\ []), do: nif_decode!(input)
 
   @doc """
   Identical to `encode/1`. Exists to implement Phoenix interface and encodes to a single normal string.
