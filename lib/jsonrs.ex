@@ -10,7 +10,7 @@ defmodule Jsonrs do
   @spec nif_encode_pretty!(term, non_neg_integer) :: String.t()
   defp nif_encode_pretty!(_input, _indent), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec nif_decode!(term) :: String.t()
+  @spec nif_decode!(String.t()) :: term
   defp nif_decode!(_input), do: :erlang.nif_error(:nif_not_loaded)
 
   @doc """
