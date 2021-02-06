@@ -45,7 +45,7 @@ defimpl Jsonrs.Encoder, for: Tuple do
 end
 
 defimpl Jsonrs.Encoder, for: [Date, Time, NaiveDateTime, DateTime] do
-  def encode(d), do: d |> @for.to_iso8601() |> Jsonrs.Encoder.encode()
+  def encode(d), do: d |> @for.to_iso8601()
 end
 
 defimpl Jsonrs.Encoder, for: URI do
@@ -53,5 +53,6 @@ defimpl Jsonrs.Encoder, for: URI do
 end
 
 defimpl Jsonrs.Encoder, for: Any do
+  def encode(s) when is_struct(s), do: s |> Map.from_struct() |> Jsonrs.Encoder.encode()
   def encode(any), do: any
 end
