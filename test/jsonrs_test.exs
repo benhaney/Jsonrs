@@ -9,6 +9,7 @@ defmodule JsonrsTest do
   describe "encodes" do
     test "simple map" do
       assert Jsonrs.encode!(%{"foo" => 5}) == ~s({"foo":5})
+      assert Jsonrs.encode!({:ok, :error}) == ~s(["ok","error"])
     end
 
     test "struct using fallback protocol" do
