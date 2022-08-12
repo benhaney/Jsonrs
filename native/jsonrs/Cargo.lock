@@ -180,7 +180,7 @@ dependencies = [
 [[package]]
 name = "serde_rustler"
 version = "0.0.5"
-source = "git+https://github.com/lytedev/serde_rustler?branch=master#48e446e9c12652c680031307735751e4b6342e9a"
+source = "git+https://github.com/benhaney/serde_rustler?tag=v0.0.5#5cd7d8c056b13b5999b321147ccc36d50eca1d44"
 dependencies = [
  "lazy_static",
  "quick-error",
