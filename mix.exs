@@ -1,7 +1,7 @@
 defmodule Jsonrs.MixProject do
   use Mix.Project
 
-  @version "0.1.6"
+  @version "0.2.0"
 
   def project do
     [
@@ -9,7 +9,6 @@ defmodule Jsonrs.MixProject do
       version: @version,
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
-      compilers: [:rustler] ++ Mix.compilers(),
       rustler_crates: rustler_crates(),
       deps: deps(),
       description: description(),
@@ -29,8 +28,8 @@ defmodule Jsonrs.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:rustler, "~> 0.21.0"},
-      {:ex_doc, "~> 0.21", only: :dev, runtime: false},
+      {:rustler, "~> 0.25.0"},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
     ]
   end
 
