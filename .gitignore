@@ -25,3 +25,5 @@ jsonrs-*.tar
 .elixir_ls
 
 *.so
+
+native/jsonrs/target/

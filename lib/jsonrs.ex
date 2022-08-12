@@ -2,7 +2,7 @@ defmodule Jsonrs do
   @moduledoc """
   A JSON library powered by Rust's Serde through a NIF
   """
-  use Rustler, otp_app: :jsonrs, crate: "jsonrs"
+  use Rustler, otp_app: :jsonrs
 
   @spec nif_encode!(term) :: String.t()
   defp nif_encode!(_input), do: :erlang.nif_error(:nif_not_loaded)
