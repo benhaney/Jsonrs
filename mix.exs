@@ -29,6 +29,7 @@ defmodule Jsonrs.MixProject do
   defp deps do
     [
       {:rustler, "~> 0.25.0"},
+      {:rustler_precompiled, "~> 0.5"},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
     ]
   end

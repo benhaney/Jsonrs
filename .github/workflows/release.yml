@@ -2,6 +2,7 @@ name: Build precompiled NIFs
 
 env:
   NIF_DIRECTORY: "native/jsonrs"
+  SKIP_JSONRS_BUILD: "true"
 
 on:
   push:

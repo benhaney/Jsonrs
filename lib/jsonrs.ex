@@ -6,8 +6,8 @@ defmodule Jsonrs do
   version = Mix.Project.config()[:version]
 
   use RustlerPrecompiled, otp_app: :jsonrs,
-    base_url: "https://github.com/philss/rustler_precompilation_example/releases/download/v#{version}",
-    force_build: System.get_env("RUSTLER_PRECOMPILATION_EXAMPLE_BUILD") in ["1", "true"],
+    base_url: "https://github.com/lytedev/jsonrs/releases/download/v#{version}",
+    force_build: not(System.get_env("SKIP_JSONRS_BUILD") in ["1", "true"]),
     version: version
 
   @spec nif_encode!(term) :: String.t()
