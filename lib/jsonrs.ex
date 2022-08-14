@@ -2,7 +2,13 @@ defmodule Jsonrs do
   @moduledoc """
   A JSON library powered by Rust's Serde through a NIF
   """
-  use Rustler, otp_app: :jsonrs
+
+  version = Mix.Project.config()[:version]
+
+  use RustlerPrecompiled, otp_app: :jsonrs,
+    base_url: "https://github.com/lytedev/jsonrs/releases/download/v#{version}",
+    force_build: not(System.get_env("SKIP_JSONRS_BUILD") in ["1", "true"]),
+    version: version
 
   @spec nif_encode!(term) :: String.t()
   defp nif_encode!(_input), do: :erlang.nif_error(:nif_not_loaded)
