@@ -28,8 +28,8 @@ defmodule Jsonrs.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:rustler, "~> 0.25.0"},
       {:rustler_precompiled, "~> 0.5"},
+      {:rustler, "~> 0.25.0", optional: true},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
     ]
   end

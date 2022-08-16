@@ -8,7 +8,7 @@ Add Jsonrs as a dependency in your `mix.exs` file.
 
 ```elixir
 def deps do
-  [{:jsonrs, "~> 0.1"}]
+  [{:jsonrs, "~> 0.2"}]
 end
 ```
 
@@ -37,7 +37,7 @@ If custom encoding defintions are not required, the first pass can be disabled e
 ## Performance
 
 Jsonrs has different performance characteristics in different modes.
-In the default 2-pass mode, Jsonrs is comparable feature-wise to Jason or Poison and should always be much faster (~5-10x) and consume less memory (~3-30x) than either of them.
+In the default 2-pass mode, Jsonrs is comparable feature-wise to Jason or Poison and should always be much faster (~5-10x) and consume less memory (~3-30x) than either of them when working with any non-trivial JSON.
 In lean mode, Jsonrs is comparable feature-wise to jiffy and should always be faster (~3x) and use less memory (~100x+) than it.
 
 For example, here is a benchmark of Jsonrs's speed and memory consumption compared to other popular JSON libraries when encoding the 8MB [issue-90.json](https://github.com/devinus/poison/blob/a4208a6252f4e58fbcc8d9fd2f4f64c99e974cc8/bench/data/issue-90.json) from the Poison benchmark data.
@@ -60,8 +60,8 @@ It is easy to see that Jsonrs dramatically outperforms Poison and Jason, while J
 
 ### Basic usage
 ```elixir
-iex> Jsonrs.encode!(%{"x" => [1,2], "y" => 0.5}) |> IO.puts()
-{"x":[1,2],"y":0.5}
+iex> Jsonrs.encode!(%{"x" => [1, 2], "y" => 0.5})
+"{\"x\":[1,2],\"y\":0.5}"
 
 iex> Jsonrs.decode!("{\"x\":[1,2],\"y\":0.5}")
 %{"x" => [1, 2], "y" => 0.5}
@@ -74,6 +74,10 @@ iex> Jsonrs.encode!(%{"x" => false, "y" => []}, pretty: true) |> IO.puts()
 ```
 
 ### Defining a custom encoder
+
+Implement `Jsonrs.Encoder` for your struct, with an `encode/1` function that returns any other type encodable by Jsonrs (it does not need to return a string).
+
+For example:
 
 ```elixir
 defimpl Jsonrs.Encoder, for: [MapSet, Range, Stream] do
