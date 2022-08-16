@@ -12,6 +12,8 @@ def deps do
 end
 ```
 
+To avoid requiring an entire Rust toolchain for projects that use Jsonrs, pre-built binaries are provided via [Rustler Precompiled](https://github.com/philss/rustler_precompiled), which will download a platform-specific binary from the appropriate Github release during compilation. If you would like to avoid using the pre-built binaries, set the environment variable `FORCE_JSONRS_BUILD=true` when building.
+
 ## Summary
 
 Jsonrs is much faster than other JSON libraries for Elixir, including other NIFs like jiffy.
