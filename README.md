@@ -8,7 +8,7 @@ Add Jsonrs as a dependency in your `mix.exs` file.
 
 ```elixir
 def deps do
-  [{:jsonrs, "~> 0.2"}]
+  [{:jsonrs, "~> 0.2.0"}]
 end
 ```
 
