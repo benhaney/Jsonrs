@@ -85,6 +85,11 @@ defimpl Jsonrs.Encoder, for: [MapSet, Range, Stream] do
 end
 ```
 
+## Limitations
+
+Inherited from `serde_json`, decoding is limited to a nesting depth of 128. As per RFC 7159, section 9:
+> An implementation may set limits on the maximum depth of nesting.
+
 ## Credits
 
 Jsonrs is built on the backs of giants. It is connecting the Rust libraries [Serde_rustler](https://github.com/sunny-g/serde_rustler) and [Serde_json](https://github.com/serde-rs/json), exposing them to Elixir through [Rustler](https://github.com/rusterlium/rustler), and wrapping the NIF in an interface inspired by [Jason](https://github.com/michalmuskala/jason). Without these projects, Jsonrs probably wouldn't exist.
