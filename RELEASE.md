@@ -7,4 +7,4 @@ From: https://hexdocs.pm/rustler_precompiled/precompilation_guide.html#recommend
 - `git push --tags`
 - Wait for the associated GitHub actions to finish
 - Run `mix rustler_precompiled.download Jsonrs --all`
-- Release the packge to hex.pm `mix hex.publish` (making sure to include the correct files (**untested!**)
+- Release the package to hex.pm `mix hex.publish` (making sure to include the correct files (**untested!**)

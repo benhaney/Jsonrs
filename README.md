@@ -32,7 +32,7 @@ The first pass involves mapping the input object according to any custom encodin
 
 The second pass performs the actual encoding of the input to a JSON string. This is done in the Rust NIF.
 
-If custom encoding defintions are not required, the first pass can be disabled entirely by passing `lean: true` in the encode opts. When operating in this mode, structs will always be encoded as if they were maps regardless of custom encoder implementations.
+If custom encoding definitions are not required, the first pass can be disabled entirely by passing `lean: true` in the encode opts. When operating in this mode, structs will always be encoded as if they were maps regardless of custom encoder implementations.
 
 ## Performance
 
