@@ -1,7 +1,7 @@
 defmodule Jsonrs.MixProject do
   use Mix.Project
 
-  @version "0.2.0"
+  @version "0.2.1"
 
   def project do
     [
@@ -28,7 +28,7 @@ defmodule Jsonrs.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:rustler_precompiled, "~> 0.5"},
+      {:rustler_precompiled, "~> 0.5.4"},
       {:rustler, "~> 0.25.0", optional: true},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
     ]

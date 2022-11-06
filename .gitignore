@@ -27,3 +27,5 @@ jsonrs-*.tar
 *.so
 
 native/jsonrs/target/
+
+checksum-*.exs
