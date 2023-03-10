@@ -28,6 +28,16 @@ defmodule JsonrsTest do
       assert "12:00:00" == Jsonrs.encode!(~T[12:00:00]) |> Jsonrs.decode!()
       assert %{"hour" => _, "minute" => _, "second" => _} = Jsonrs.encode!(~T[12:00:00], lean: true) |> Jsonrs.decode!()
     end
+
+    test "with compression: :gzip" do
+      assert zipped = Jsonrs.encode!(%{"foo" => 5}, compression: :gzip)
+      assert :zlib.gunzip(zipped) == ~s({"foo":5})
+    end
+
+    test "with compression and pretty" do
+      assert zipped = Jsonrs.encode!([1], compression: :gzip, pretty: 2)
+      assert :zlib.gunzip(zipped) == "[\n  1\n]"
+    end
   end
 
   describe "decodes" do
