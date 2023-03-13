@@ -55,6 +55,10 @@ It is easy to see that Jsonrs dramatically outperforms Poison and Jason, while J
 `Jsonrs.encode/2` takes an Elixir term and a keyword list of options and turns the input term into a JSON string with behavior defined by the options. Valid options are:
 * `lean`: disables the first encoder pass (default `false`)
 * `pretty`: turns on pretty printing when `true` or a non-negative-integer specifying indentation size (default `false`)
+* `compress`: turns on streaming compression when passed in.
+  * Currently you can pass in `true`, or `:gzip` to get default level gzip compression
+  * You can also pass `{:gzip, 0..9}` to get a specific level of gzip compression
+  * Other compression forms may be accepted in the future
 
 ## Examples
 

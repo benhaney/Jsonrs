@@ -13,8 +13,11 @@ defmodule Jsonrs do
     nif_versions: ["2.16", "2.15", "2.14"],
     version: version
 
-  @spec nif_encode(term, non_neg_integer | nil) :: String.t()
-  defp nif_encode(_input, _indent), do: :erlang.nif_error(:nif_not_loaded)
+  @type compression :: :gzip | :none
+  @type level :: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+  @spec nif_encode(term, non_neg_integer | nil, {compression(), level()}) :: String.t()
+  defp nif_encode(_input, _indent, _compression), do: :erlang.nif_error(:nif_not_loaded)
 
   @spec nif_decode(String.t()) :: term
   defp nif_decode(_input), do: :erlang.nif_error(:nif_not_loaded)
@@ -71,13 +74,15 @@ defmodule Jsonrs do
   @spec encode!(term, keyword) :: String.t()
   def encode!(input, opts \\ []) do
     {lean, opts} = Keyword.pop(opts, :lean, false)
-    {indent, _opts} = Keyword.pop(opts, :pretty, nil)
+    {indent, opts} = Keyword.pop(opts, :pretty, nil)
+    {compression, _opts} = Keyword.pop(opts, :compress, nil)
+    compression = validate_compression(compression)
     indent = if true == indent, do: 2, else: indent
     case lean do
       true -> input
       false -> Jsonrs.Encoder.encode(input)
     end
-    |> nif_encode(indent)
+    |> nif_encode(indent, compression)
   end
 
   @doc """
@@ -107,4 +112,12 @@ defmodule Jsonrs do
   """
   @spec encode_to_iodata!(term, keyword) :: String.t()
   def encode_to_iodata!(input, opts \\ []), do: encode!(input, opts)
+
+  defp validate_compression(nil), do: {:none, 0}
+  defp validate_compression(:gzip), do: {:gzip, nil}
+  defp validate_compression(true), do: {:gzip, nil}
+  defp validate_compression({:gzip, level}) when level in (0..10), do: {:gzip, level}
+  defp validate_compression(other) do
+    raise "invalid :compress option. #{inspect(other)} is not supported."
+  end
 end

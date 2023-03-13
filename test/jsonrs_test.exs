@@ -29,13 +29,25 @@ defmodule JsonrsTest do
       assert %{"hour" => _, "minute" => _, "second" => _} = Jsonrs.encode!(~T[12:00:00], lean: true) |> Jsonrs.decode!()
     end
 
-    test "with compression: :gzip" do
-      assert zipped = Jsonrs.encode!(%{"foo" => 5}, compression: :gzip)
+    test "with compress: true" do
+      assert zipped = Jsonrs.encode!(%{"foo" => 5}, compress: true)
       assert :zlib.gunzip(zipped) == ~s({"foo":5})
     end
 
-    test "with compression and pretty" do
-      assert zipped = Jsonrs.encode!([1], compression: :gzip, pretty: 2)
+    test "with compress: :gzip" do
+      assert zipped = Jsonrs.encode!(%{"foo" => 5}, compress: :gzip)
+      assert :zlib.gunzip(zipped) == ~s({"foo":5})
+    end
+
+    test "with compress: {:gzip, level}" do
+      for level <- 0..9 do
+        assert zipped = Jsonrs.encode!(%{"Leslie" => "Pawnee"}, compress: {:gzip, level})
+        assert :zlib.gunzip(zipped) == ~s({"Leslie":"Pawnee"})
+      end
+    end
+
+    test "with compress and pretty" do
+      assert zipped = Jsonrs.encode!([1], compress: :gzip, pretty: 2)
       assert :zlib.gunzip(zipped) == "[\n  1\n]"
     end
   end

@@ -1,10 +1,11 @@
 use rustler::{Env, Error, Term};
+mod compression;
 
 rustler::init!("Elixir.Jsonrs", [encode, decode]);
 
 #[rustler::nif(name = "nif_encode", schedule = "DirtyCpu")]
-fn encode(term: Term, indent_size: Option<u32>) -> Result<String, Error> {
-  let mut buf = Vec::new();
+fn encode(term: Term, indent_size: Option<u32>, compression: Option<(compression::Algs, Option<u32>)>) -> Result<String, Error> {
+  let mut buf = compression::get_writer(compression);
   let des = serde_rustler::Deserializer::from(term);
   match indent_size {
     None => serde_transcode::transcode(des, &mut serde_json::Serializer::new(&mut buf)),
@@ -15,7 +16,9 @@ fn encode(term: Term, indent_size: Option<u32>) -> Result<String, Error> {
     }
   }.map_err(|e| Error::RaiseTerm(Box::new(format!("{}", e))))?;
 
-  unsafe { Ok(String::from_utf8_unchecked(buf)) }
+  let output = buf.get_buf().map_err(|e| Error::RaiseTerm(Box::new(format!("{}", e))))?;
+
+  unsafe { Ok(String::from_utf8_unchecked(output)) }
 }
 
 #[rustler::nif(name = "nif_decode", schedule = "DirtyCpu")]
