@@ -31,7 +31,6 @@ dependencies = [
  "rustler",
  "serde",
  "serde-transcode",
- "serde_bytes",
  "serde_json",
  "serde_rustler",
 ]
@@ -142,15 +141,6 @@ name = "serde-transcode"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97528f0dfcf8ce2d51d995cb513a103b9cd301dc3f387a9cae5ef974381d4e1c"
-dependencies = [
- "serde",
-]
-
-[[package]]
-name = "serde_bytes"
-version = "0.11.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "45af0182ff64abaeea290235eb67da3825a576c5d53e642c4d5b652e12e6effc"
 dependencies = [
  "serde",
 ]
