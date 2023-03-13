@@ -13,7 +13,7 @@ fn encode(term: Term, indent_size: Option<u32>) -> Result<String, Error> {
       let formatter = serde_json::ser::PrettyFormatter::with_indent(indent.as_bytes());
       serde_transcode::transcode(des, &mut serde_json::Serializer::with_formatter(&mut buf, formatter))
     }
-  }.or(Err(Error::RaiseAtom("encode_error")))?;
+  }.map_err(|e| Error::RaiseTerm(Box::new(format!("{}", e))))?;
 
   unsafe { Ok(String::from_utf8_unchecked(buf)) }
 }

@@ -29,7 +29,7 @@ defmodule Jsonrs do
       iex> Jsonrs.encode("\\xFF")
       {:error, :encode_error}
   """
-  @spec encode(term, keyword) :: {:ok, String.t()} | {:error, :encode_error}
+  @spec encode(term, keyword) :: {:ok, String.t()} | {:error, String.t()}
   def encode(input, opts \\ []) do
     {:ok, encode!(input, opts)}
   rescue
