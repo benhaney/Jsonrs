@@ -12,14 +12,11 @@ defmodule Jsonrs do
     targets: RustlerPrecompiled.Config.default_targets() ++ ["aarch64-unknown-linux-musl"],
     version: version
 
-  @spec nif_encode!(term) :: String.t()
-  defp nif_encode!(_input), do: :erlang.nif_error(:nif_not_loaded)
+  @spec nif_encode(term, non_neg_integer | nil) :: String.t()
+  defp nif_encode(_input, _indent), do: :erlang.nif_error(:nif_not_loaded)
 
-  @spec nif_encode_pretty!(term, non_neg_integer) :: String.t()
-  defp nif_encode_pretty!(_input, _indent), do: :erlang.nif_error(:nif_not_loaded)
-
-  @spec nif_decode!(String.t()) :: term
-  defp nif_decode!(_input), do: :erlang.nif_error(:nif_not_loaded)
+  @spec nif_decode(String.t()) :: term
+  defp nif_decode(_input), do: :erlang.nif_error(:nif_not_loaded)
 
   @doc """
   Generates JSON corresponding to `input`.
@@ -73,17 +70,14 @@ defmodule Jsonrs do
   @spec encode!(term, keyword) :: String.t()
   def encode!(input, opts \\ []) do
     {lean, opts} = Keyword.pop(opts, :lean, false)
-    {indent, _opts} = Keyword.pop(opts, :pretty, -1)
+    {indent, _opts} = Keyword.pop(opts, :pretty, nil)
     indent = if true == indent, do: 2, else: indent
     case lean do
       true -> input
       false -> Jsonrs.Encoder.encode(input)
     end
-    |> do_encode!(indent)
+    |> nif_encode(indent)
   end
-
-  defp do_encode!(input, indent) when is_integer(indent) and indent >= 0, do: nif_encode_pretty!(input, indent)
-  defp do_encode!(input, _indent), do: nif_encode!(input)
 
   @doc """
   Parses a JSON value from `input` string.
@@ -99,7 +93,7 @@ defmodule Jsonrs do
       ** (ErlangError) Erlang error: "expected value at line 1 column 1"
   """
   @spec decode!(String.t(), Keyword.t()) :: term
-  def decode!(input, _opts \\ []), do: nif_decode!(input)
+  def decode!(input, _opts \\ []), do: nif_decode(input)
 
   @doc """
   Identical to `encode/1`. Exists to implement Phoenix interface and encodes to a single normal string.
