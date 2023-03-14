@@ -4,8 +4,8 @@ mod compression;
 rustler::init!("Elixir.Jsonrs", [encode, decode]);
 
 #[rustler::nif(name = "nif_encode", schedule = "DirtyCpu")]
-fn encode(term: Term, indent_size: Option<u32>, compression: Option<(compression::Algs, Option<u32>)>) -> Result<String, Error> {
-  let mut buf = compression::get_writer(compression);
+fn encode(term: Term, indent_size: Option<u32>, comp_opts: Option<(compression::Algs, Option<u32>)>) -> Result<String, Error> {
+  let mut buf = compression::get_writer(comp_opts);
   let des = serde_rustler::Deserializer::from(term);
   match indent_size {
     None => serde_transcode::transcode(des, &mut serde_json::Serializer::new(&mut buf)),

@@ -13,10 +13,11 @@ defmodule Jsonrs do
     nif_versions: ["2.16", "2.15", "2.14"],
     version: version
 
-  @type compression :: :gzip | :none
-  @type level :: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+  @type compression_algorithm :: :gzip | :none
+  @type compression_level :: non_neg_integer()
+  @type compression_options :: {compression_algorithm(), compression_level()}
 
-  @spec nif_encode(term, non_neg_integer | nil, {compression(), level()}) :: String.t()
+  @spec nif_encode(term, non_neg_integer | nil, compression_options()) :: String.t()
   defp nif_encode(_input, _indent, _compression), do: :erlang.nif_error(:nif_not_loaded)
 
   @spec nif_decode(String.t()) :: term
@@ -75,7 +76,7 @@ defmodule Jsonrs do
   def encode!(input, opts \\ []) do
     {lean, opts} = Keyword.pop(opts, :lean, false)
     {indent, opts} = Keyword.pop(opts, :pretty, nil)
-    {compression, _opts} = Keyword.pop(opts, :compress, nil)
+    {compression, _opts} = Keyword.pop(opts, :compress, :none)
     compression = validate_compression(compression)
     indent = if true == indent, do: 2, else: indent
     case lean do
@@ -113,11 +114,6 @@ defmodule Jsonrs do
   @spec encode_to_iodata!(term, keyword) :: String.t()
   def encode_to_iodata!(input, opts \\ []), do: encode!(input, opts)
 
-  defp validate_compression(nil), do: {:none, 0}
-  defp validate_compression(:gzip), do: {:gzip, nil}
-  defp validate_compression(true), do: {:gzip, nil}
-  defp validate_compression({:gzip, level}) when level in (0..10), do: {:gzip, level}
-  defp validate_compression(other) do
-    raise "invalid :compress option. #{inspect(other)} is not supported."
-  end
+  defp validate_compression(atom) when is_atom(atom), do: {atom, nil}
+  defp validate_compression(other), do: other
 end
