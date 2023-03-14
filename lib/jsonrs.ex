@@ -27,7 +27,7 @@ defmodule Jsonrs do
       {:ok, "{\\"x\\":[1,2]}"}
 
       iex> Jsonrs.encode("\\xFF")
-      {:error, :encode_error}
+      {:error, \"Expected to deserialize a UTF-8 stringable term\"}
   """
   @spec encode(term, keyword) :: {:ok, String.t()} | {:error, String.t()}
   def encode(input, opts \\ []) do
@@ -65,7 +65,7 @@ defmodule Jsonrs do
       "{\\"x\\":[1,2]}"
 
       iex> Jsonrs.encode!("\\xFF")
-      ** (ErlangError) Erlang error: :encode_error
+      ** (ErlangError) Erlang error: \"Expected to deserialize a UTF-8 stringable term\"
   """
   @spec encode!(term, keyword) :: String.t()
   def encode!(input, opts \\ []) do
