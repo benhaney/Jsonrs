@@ -8,6 +8,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   FORCE_JSONRS_BUILD: true
+  CARGO_INCREMENTAL: 0
 
 permissions:
   contents: read
@@ -25,12 +26,20 @@ jobs:
       with:
         elixir-version: '1.14.3'
         otp-version: '25.x'
-    - name: Restore dependencies cache
+    - name: Restore Elixir dependencies cache
       uses: actions/cache@v3
       with:
         path: deps
         key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
         restore-keys: ${{ runner.os }}-mix-
+    - name: Restore Cargo cache
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
     - name: Install dependencies
       run: mix deps.get
     - name: Run tests
