@@ -46,13 +46,18 @@ defmodule JsonrsTest do
       assert :zlib.gunzip(zipped) == "[\n  1\n]"
     end
 
+    test "with compress: false/nil" do
+      assert Jsonrs.encode!(%{ron: "swanson"}, compress: false) == ~S({"ron":"swanson"})
+      assert Jsonrs.encode!(%{ron: "swanson"}, compress: nil) == ~S({"ron":"swanson"})
+    end
+
     test "with invalid compress options" do
       assert_raise ArgumentError, "argument error", fn ->
         Jsonrs.encode!(%{foo: "bar"}, compress: :zlib)
       end
 
       assert_raise ArgumentError, "argument error", fn ->
-        Jsonrs.encode!(%{foo: "bar"}, compress: false)
+        Jsonrs.encode!(%{foo: "bar"}, compress: "Wat?!?!")
       end
 
       assert_raise ArgumentError, "argument error", fn ->

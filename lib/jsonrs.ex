@@ -114,6 +114,8 @@ defmodule Jsonrs do
   @spec encode_to_iodata!(term, keyword) :: String.t()
   def encode_to_iodata!(input, opts \\ []), do: encode!(input, opts)
 
+  defp validate_compression(nil), do: {:none, nil}
+  defp validate_compression(false), do: {:none, nil}
   defp validate_compression(atom) when is_atom(atom), do: {atom, nil}
   defp validate_compression(other), do: other
 end
