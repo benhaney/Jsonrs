@@ -9,7 +9,8 @@ defmodule Jsonrs do
   use RustlerPrecompiled, otp_app: :jsonrs,
     base_url: "#{source_url}/releases/download/v#{version}",
     force_build: System.get_env("FORCE_JSONRS_BUILD") in ["1", "true"],
-    targets: RustlerPrecompiled.Config.default_targets() ++ ["aarch64-unknown-linux-musl"],
+    targets: RustlerPrecompiled.Config.default_targets(),
+    nif_versions: ["2.16", "2.15", "2.14"],
     version: version
 
   @spec nif_encode(term, non_neg_integer | nil) :: String.t()
