@@ -28,6 +28,42 @@ defmodule JsonrsTest do
       assert "12:00:00" == Jsonrs.encode!(~T[12:00:00]) |> Jsonrs.decode!()
       assert %{"hour" => _, "minute" => _, "second" => _} = Jsonrs.encode!(~T[12:00:00], lean: true) |> Jsonrs.decode!()
     end
+
+    test "with compress: :gzip" do
+      assert zipped = Jsonrs.encode!(%{"foo" => 5}, compress: :gzip)
+      assert :zlib.gunzip(zipped) == ~s({"foo":5})
+    end
+
+    test "with compress: {:gzip, level}" do
+      for level <- 0..9 do
+        assert zipped = Jsonrs.encode!(%{"Leslie" => "Pawnee"}, compress: {:gzip, level})
+        assert :zlib.gunzip(zipped) == ~s({"Leslie":"Pawnee"})
+      end
+    end
+
+    test "with compress and pretty" do
+      assert zipped = Jsonrs.encode!([1], compress: :gzip, pretty: 2)
+      assert :zlib.gunzip(zipped) == "[\n  1\n]"
+    end
+
+    test "with compress: false/nil" do
+      assert Jsonrs.encode!(%{ron: "swanson"}, compress: false) == ~S({"ron":"swanson"})
+      assert Jsonrs.encode!(%{ron: "swanson"}, compress: nil) == ~S({"ron":"swanson"})
+    end
+
+    test "with invalid compress options" do
+      assert_raise ArgumentError, "argument error", fn ->
+        Jsonrs.encode!(%{foo: "bar"}, compress: :zlib)
+      end
+
+      assert_raise ArgumentError, "argument error", fn ->
+        Jsonrs.encode!(%{foo: "bar"}, compress: "Wat?!?!")
+      end
+
+      assert_raise ArgumentError, "argument error", fn ->
+        Jsonrs.encode!(%{foo: "bar"}, compress: {:gzip, "foo"})
+      end
+    end
   end
 
   describe "decodes" do
