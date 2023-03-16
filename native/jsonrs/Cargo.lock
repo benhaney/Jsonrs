@@ -56,7 +56,7 @@ checksum = "501266b7edd0174f8530248f87f99c88fbe60ca4ef3dd486835b8d8d53136f7f"
 
 [[package]]
 name = "jsonrs"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "flate2",
  "lazy_static",

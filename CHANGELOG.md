@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.3.0] - 2023-03-15
+### Added
+- Support for compression via the `compress` encode option (#15, thanks @mmmries)
+
 ### Changed
 - Errors returned from `encode/2` are now descriptive strings instead of a generic atom. Instead of `{:error, :encode_error}`, you may now see something like `{:error, "Expected to deserialize a UTF-8 stringable term"}`. This is technically a breaking change.
 
@@ -17,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0] - 2022-08-14
 ### Added
-- Precompiled binaries via [rustler_precompiled](https://github.com/philss/rustler_precompiled)
+- Precompiled binaries via [rustler_precompiled](https://github.com/philss/rustler_precompiled) (#10, thanks @lytedev)
 
 ## [0.1.6] - 2021-03-11
 ### Fixed
@@ -37,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.2] - 2019-12-02
 ### Changed
-- Make `decode` and `decode!` accept a second (unused) options argument for compatibility
+- Make `decode` and `decode!` accept a second (unused) options argument for compatibility (#1, thanks @joedevivo)
 
 ## [0.1.1] - 2019-11-08
 ### Changed
@@ -48,7 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release
 
 
-[Unreleased]: https://github.com/benhaney/Jsonrs/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/benhaney/Jsonrs/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/benhaney/Jsonrs/compare/v0.2.1...v0.3.0
 [0.2.1]: https://github.com/benhaney/Jsonrs/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/benhaney/Jsonrs/compare/v0.1.6...v0.2.0
 [0.1.6]: https://github.com/benhaney/Jsonrs/compare/v0.1.5...v0.1.6
