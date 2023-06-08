@@ -38,7 +38,7 @@ defmodule Jsonrs do
   def encode(input, opts \\ []) do
     {:ok, encode!(input, opts)}
   rescue
-    e in ErlangError -> {:error, e.original}
+    e -> {:error, error_string(e)}
   end
 
   @doc """
@@ -56,7 +56,7 @@ defmodule Jsonrs do
   def decode(input, opts \\ []) do
     {:ok, decode!(input, opts)}
   rescue
-    e in ErlangError -> {:error, e.original}
+    e -> {:error, error_string(e)}
   end
 
   @doc """
@@ -118,4 +118,8 @@ defmodule Jsonrs do
   defp validate_compression(false), do: {:none, nil}
   defp validate_compression(atom) when is_atom(atom), do: {atom, nil}
   defp validate_compression(other), do: other
+
+  defp error_string(%ErlangError{original: err}), do: error_string(err)
+  defp error_string(err) when is_exception(err), do: Exception.message(err)
+  defp error_string(err), do: err
 end
