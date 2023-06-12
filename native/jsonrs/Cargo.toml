@@ -11,9 +11,9 @@ crate-type = ["dylib"]
 
 [dependencies]
 flate2 = { version = "1.0", features = ["zlib-ng"], default-features = false }
-rustler = "0.27.0"
+rustler = "0.28.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-serde_rustler = { git = "https://github.com/benhaney/serde_rustler", tag = "v0.0.6" }
+serde_rustler = { git = "https://github.com/benhaney/serde_rustler", tag = "v0.0.7" }
 serde-transcode = "1.1"
 lazy_static = "1.0"
