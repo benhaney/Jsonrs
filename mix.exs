@@ -36,7 +36,7 @@ defmodule Jsonrs.MixProject do
 
   defp rustler_crates do
     [
-      jsonrs: [path: "native/jsonrs", mode: if(Mix.env() == :prod, do: :release, else: :debug)]
+      jsonrs: [path: "native/jsonrs"]
     ]
   end
 
