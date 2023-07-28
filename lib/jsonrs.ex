@@ -52,7 +52,7 @@ defmodule Jsonrs do
       iex> Jsonrs.decode("invalid")
       {:error, "expected value at line 1 column 1"}
   """
-  @spec decode(String.t(), Keyword.t()) :: {:ok, term} | {:error, String.t()}
+  @spec decode(iodata, Keyword.t()) :: {:ok, term} | {:error, String.t()}
   def decode(input, opts \\ []) do
     {:ok, decode!(input, opts)}
   rescue
@@ -99,8 +99,8 @@ defmodule Jsonrs do
       iex> Jsonrs.decode!("invalid")
       ** (ErlangError) Erlang error: "expected value at line 1 column 1"
   """
-  @spec decode!(String.t(), Keyword.t()) :: term
-  def decode!(input, _opts \\ []), do: nif_decode(input)
+  @spec decode!(iodata, Keyword.t()) :: term
+  def decode!(input, _opts \\ []), do: input |> IO.iodata_to_binary() |> nif_decode()
 
   @doc """
   Identical to `encode/1`. Exists to implement Phoenix interface and encodes to a single normal string.
