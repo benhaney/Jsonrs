@@ -3,7 +3,7 @@ defprotocol Jsonrs.Encoder do
   Protocol controlling how a value is encoded to JSON.
 
   By default, structs are encoded as maps without the `:__struct__` key. If this
-  is sufficient for you use, you don't need to implement this protocol.
+  is sufficient for your use, you don't need to implement this protocol.
 
   When implementing an encoding function, the goal is to turn your value into
   something already capable of being encoded.
