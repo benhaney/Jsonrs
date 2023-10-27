@@ -56,7 +56,7 @@ checksum = "501266b7edd0174f8530248f87f99c88fbe60ca4ef3dd486835b8d8d53136f7f"
 
 [[package]]
 name = "jsonrs"
-version = "0.3.2"
+version = "0.3.3"
 dependencies = [
  "flate2",
  "lazy_static",
@@ -131,9 +131,9 @@ checksum = "a3f87b73ce11b1619a3c6332f45341e0047173771e8b8b73f87bfeefb7b56244"
 
 [[package]]
 name = "rustler"
-version = "0.28.0"
+version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7d7a2f98cb272ae0548e434bb3afde626012084cbebef84542bc7afed868bd6f"
+checksum = "c4b4fea69e23de68c42c06769d6624d2d018da550c17244dd4b691f90ced4a7e"
 dependencies = [
  "lazy_static",
  "rustler_codegen",
@@ -142,9 +142,9 @@ dependencies = [
 
 [[package]]
 name = "rustler_codegen"
-version = "0.28.0"
+version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2ae37fb154683a1ff13e95dfd16c15043d6aee9853ea650ca34a45bd94e319a5"
+checksum = "406061bd07aaf052c344257afed4988c5ec8efe4d2352b4c2cf27ea7c8575b12"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -154,9 +154,9 @@ dependencies = [
 
 [[package]]
 name = "rustler_sys"
-version = "2.2.0"
+version = "2.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ff26a42e62d538f82913dd34f60105ecfdffbdb25abdc3c3580b0c622285332"
+checksum = "0a7c0740e5322b64e2b952d8f0edce5f90fcf6f6fe74cca3f6e78eb3de5ea858"
 dependencies = [
  "regex",
  "unreachable",
@@ -210,8 +210,8 @@ dependencies = [
 
 [[package]]
 name = "serde_rustler"
-version = "0.0.7"
-source = "git+https://github.com/benhaney/serde_rustler?tag=v0.0.7#49ca108b698cf9d664fb9b6e5a45b4dc30cc7e64"
+version = "0.0.8"
+source = "git+https://github.com/lytedev/serde_rustler?rev=cd7c66fbc837135616a7ff39c13623de65e9f56f#cd7c66fbc837135616a7ff39c13623de65e9f56f"
 dependencies = [
  "lazy_static",
  "quick-error",
