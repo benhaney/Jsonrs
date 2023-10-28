@@ -211,7 +211,7 @@ dependencies = [
 [[package]]
 name = "serde_rustler"
 version = "0.0.8"
-source = "git+https://github.com/lytedev/serde_rustler?rev=cd7c66fbc837135616a7ff39c13623de65e9f56f#cd7c66fbc837135616a7ff39c13623de65e9f56f"
+source = "git+https://github.com/benhaney/serde_rustler?tag=v0.0.8#f8da90d85d7b2c9964cb3b962fae2869278e5b5d"
 dependencies = [
  "lazy_static",
  "quick-error",
