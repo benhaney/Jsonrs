@@ -14,24 +14,38 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  test:
 
     name: Build and test
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - pair:
+              elixir: 1.12
+              otp: 24
+          - pair:
+              elixir: 1.14
+              otp: 25
+          - pair:
+              elixir: 1.15
+              otp: 26
 
     steps:
     - uses: actions/checkout@v3
     - name: Set up Elixir
       uses: erlef/setup-beam@v1
       with:
-        elixir-version: '1.14.3'
-        otp-version: '25.x'
+        elixir-version: ${{matrix.pair.elixir}}
+        otp-version: ${{matrix.pair.otp}}
     - name: Restore Elixir dependencies cache
       uses: actions/cache@v3
       with:
         path: deps
-        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-        restore-keys: ${{ runner.os }}-mix-
+        key: ${{ runner.os }}-mix-${{matrix.pair.elixir}}-${{matrix.pair.otp}}-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-${{matrix.pair.elixir}}-${{matrix.pair.otp}}-
     - name: Restore Cargo cache
       uses: actions/cache@v3
       with:

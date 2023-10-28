@@ -12,6 +12,10 @@ defmodule JsonrsTest do
       assert Jsonrs.encode!({:ok, :error}) == ~s(["ok","error"])
     end
 
+    test "complicated term" do
+      assert Jsonrs.encode!(%{map: %{1 => "foo", "list" => [:ok, 42, -42, 42.0, 42.01, :error], tuple: {:ok, []}, atom: :atom}}) == ~s({"map":{"1":"foo","atom":"atom","tuple":["ok",[]],"list":["ok",42,-42,42.0,42.01,"error"]}})
+    end
+
     test "struct using fallback protocol" do
       assert Jsonrs.encode!(%Container{payload: ~T[12:00:00]}) == ~s({"payload":"12:00:00"})
     end
