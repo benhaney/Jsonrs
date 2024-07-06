@@ -1,4 +1,4 @@
-use rustler::{Env, Error, Term};
+use rustler::{serde::{Deserializer, Serializer}, Env, Error, Term};
 mod compression;
 
 rustler::init!("Elixir.Jsonrs", [encode, decode]);
@@ -6,7 +6,7 @@ rustler::init!("Elixir.Jsonrs", [encode, decode]);
 #[rustler::nif(name = "nif_encode", schedule = "DirtyCpu")]
 fn encode(term: Term, indent_size: Option<u32>, comp_opts: Option<(compression::Algs, Option<u32>)>) -> Result<String, Error> {
   let mut buf = compression::get_writer(comp_opts);
-  let des = serde_rustler::Deserializer::from(term);
+  let des = Deserializer::from(term);
   match indent_size {
     None => serde_transcode::transcode(des, &mut serde_json::Serializer::new(&mut buf)),
     Some(inds) => {
@@ -25,6 +25,6 @@ fn encode(term: Term, indent_size: Option<u32>, comp_opts: Option<(compression::
 fn decode<'a>(env: Env<'a>, string: String) -> Result<Term<'a>, Error> {
   serde_transcode::transcode(
     &mut serde_json::Deserializer::from_slice(string.as_bytes()),
-    serde_rustler::Serializer::from(env)
+    Serializer::from(env)
   ).map_err(|e| e.into())
 }
