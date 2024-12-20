@@ -1,6 +1,6 @@
 [package]
 name = "jsonrs"
-version = "0.3.3"
+version = "0.3.4"
 authors = []
 edition = "2021"
 
@@ -11,9 +11,9 @@ crate-type = ["dylib"]
 
 [dependencies]
 flate2 = "1.0"
-rustler = "0.30.0"
+rustler = "0.35.1"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-serde_rustler = { git = "https://github.com/benhaney/serde_rustler", tag = "v0.0.8" }
+serde_rustler = { git = "https://github.com/benhaney/serde_rustler", tag = "v0.0.9" }
 serde-transcode = "1.1"
 lazy_static = "1.0"

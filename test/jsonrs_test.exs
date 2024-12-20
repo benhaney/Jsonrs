@@ -76,7 +76,7 @@ defmodule JsonrsTest do
     end
 
     test "charlist" do
-      assert Jsonrs.decode!('{"foo":5}') == %{"foo" => 5}
+      assert Jsonrs.decode!(~c({"foo":5})) == %{"foo" => 5}
     end
   end
 end

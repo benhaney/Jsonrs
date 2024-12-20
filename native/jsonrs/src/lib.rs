@@ -1,7 +1,7 @@
 use rustler::{Env, Error, Term};
 mod compression;
 
-rustler::init!("Elixir.Jsonrs", [encode, decode]);
+rustler::init!("Elixir.Jsonrs");
 
 #[rustler::nif(name = "nif_encode", schedule = "DirtyCpu")]
 fn encode(term: Term, indent_size: Option<u32>, comp_opts: Option<(compression::Algs, Option<u32>)>) -> Result<String, Error> {
